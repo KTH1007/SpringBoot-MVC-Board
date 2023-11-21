@@ -1,11 +1,7 @@
-package toyproject.springmvcboard.service;
+package toyproject.springmvcboard.domain.board;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import toyproject.springmvcboard.domain.Board;
-import toyproject.springmvcboard.dto.BoardDTO;
-import toyproject.springmvcboard.mapper.BoardMapper;
-import toyproject.springmvcboard.repository.BoardRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;

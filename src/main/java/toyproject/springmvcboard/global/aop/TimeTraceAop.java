@@ -1,4 +1,4 @@
-package toyproject.springmvcboard.aop;
+package toyproject.springmvcboard.global.aop;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

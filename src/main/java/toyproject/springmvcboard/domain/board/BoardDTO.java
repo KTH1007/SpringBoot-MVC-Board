@@ -1,4 +1,4 @@
-package toyproject.springmvcboard.dto;
+package toyproject.springmvcboard.domain.board;
 
 import lombok.Builder;
 import lombok.Getter;
