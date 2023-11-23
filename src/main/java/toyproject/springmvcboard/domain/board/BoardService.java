@@ -24,5 +24,10 @@ public class BoardService {
                 .collect(Collectors.toList());
     }
 
+    public void save(BoardDTO boardDTO) {
+        Board board = boardMapper.boardDTOToBoard(boardDTO);
+        boardRepository.save(board);
+    }
+
 
 }

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html data-bs-theme="auto" lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragments/header.html :: fragment-header(게시판)}">
+    <meta charset="UTF-8">
+</head>
+<body class="d-flex flex-column min-vh-100">
+<form th:action="@{/board/form}" method="post" th:object="${boardDTO}">
+    <div class="container">
+        <div class="mb-3">
+            <label class="form-label" for="title">제목</label>
+            <input class="form-control" id="title" name="title" placeholder="제목을 입력하세요." type="text">
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="content">내용</label>
+            <textarea class="form-control" id="content" name="content" placeholder="내용을 입력하세요." rows="10"></textarea>
+        </div>
+
+        <div class="text-end">
+            <a class="btn btn-outline-primary" th:href="@{/board/list}" type="button">목록</a>
+            <button class="btn btn-outline-primary" type="submit">글 작성</button>
+        </div>
+    </div>
+</form>
+</body>
+
+<footer th:replace="~{/fragments/footer.html :: fragment-footer}"></footer>
+</html>
