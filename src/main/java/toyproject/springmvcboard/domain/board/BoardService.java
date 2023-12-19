@@ -29,5 +29,10 @@ public class BoardService {
         boardRepository.save(board);
     }
 
+    public BoardDTO findById(Long id) {
+        Board board = boardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid board id: " + id));
+        BoardDTO boardDTO = boardMapper.boardToBoardDTO(board);
+        return boardDTO;
+    }
 
 }

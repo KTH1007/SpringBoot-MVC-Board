@@ -7,10 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,19 +23,19 @@ public class BoardController {
     public BoardController(BoardService boardService) {
         this.boardService = boardService;
     }
-
+    //게시글 목록
     @GetMapping("/list")
     public String list(Model model) {
         List<BoardDTO> boardDTOs = boardService.findAll();
         model.addAttribute("boards", boardDTOs);
         return "board/list";
     }
-
+    //게시글 작성 페이지
     @GetMapping("/form")
     public String form() {
         return "board/form";
     }
-
+    
     @PostMapping("/form")
     public String saveBoard(@Valid @ModelAttribute BoardDTO boardDTO, BindingResult bindingResult) {
         // 검증 실패시 다시 입력폼으로
@@ -48,5 +45,13 @@ public class BoardController {
         }
         boardService.save(boardDTO);
         return "redirect:/board/list";
+    }
+
+    //게시글 상세 페이지
+    @GetMapping("/post")
+    public String post(Model model, @RequestParam(required = false) Long id) {
+        BoardDTO boardDTO = boardService.findById(id);
+        model.addAttribute("boardDTO", boardDTO);
+        return "board/post";
     }
 }
