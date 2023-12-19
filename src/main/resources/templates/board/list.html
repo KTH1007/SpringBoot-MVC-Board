@@ -30,8 +30,8 @@
             </tr>
             </thead>
             <tbody class="table-group-divider hover-effect">
-            <tr th:each="board : ${boards}" th:onclick="|window.location.href='/board/post?id=${board.id}'|">
-                <td th:text="${board.id}"></td>
+            <tr th:each="board, stat : ${boards}" th:onclick="|window.location.href='/board/post?id=${board.id}'|">
+                <td th:text="${stat.index + 1}"></td>
                 <td th:text="${board.title}"></td>
                 <td>홍길동</td>
             </tr>
