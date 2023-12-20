@@ -30,18 +30,21 @@
             </a>
         </header>
 
-        <div class="bg-body-tertiary rounded-3">
-            <h3 th:text="${boardDTO.getTitle()}">Custom jumbotron</h3>
-            <span margin style="float: right">작성일</span>
+        <div class="bg-body-tertiary rounded-3" style="height: 650px">
+            <h3 th:text="${boardDTO.getTitle()}">제목</h3>
+            <span margin style="float: right" th:text="${#temporals.format(boardDTO.getCreatedAt(), 'yyyy-MM-dd HH:mm')}">작성일</span>
             </br>
             <span>작성자</span>
             <span style="float: right">조회수</span>
             <span style="float: right">추천수</span>
             <span style="float: right">댓글</span>
             <hr>
-            <p th:text="${boardDTO.getContent()}">내용</p>
+            <span th:text="${boardDTO.getContent()}"></span>
         </div>
 
+        <div class="text-end" style="margin-top: 15px">
+            <a class="btn btn-outline-primary" th:href="@{/board/list}" type="button">목록</a>
+        </div>
 
     </div>
 </main>

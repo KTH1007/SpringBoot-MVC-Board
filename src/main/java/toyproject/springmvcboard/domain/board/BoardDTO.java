@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 
 @Getter
 @Setter
@@ -19,12 +21,21 @@ public class BoardDTO {
     @NotNull
     @NotBlank
     private String content;
+    @NotNull
+    private LocalDateTime createdAt = LocalDateTime.now();
+    @NotNull
+    private LocalDateTime updatedAt = LocalDateTime.now();
+    @NotNull
+    private int enabled = 1;
 
     @Builder
-    public BoardDTO(long id, String title, String content) {
+    public BoardDTO(long id, String title, String content, LocalDateTime createdAt, LocalDateTime updatedAt, int enabled) {
         this.id = id;
         this.title = title;
         this.content = content;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.enabled = enabled;
     }
 
 }
