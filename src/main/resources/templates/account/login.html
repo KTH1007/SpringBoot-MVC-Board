@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html data-bs-theme="auto" lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragments/header.html :: fragment-header(로그인)}">
+    <meta charset="UTF-8">
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <h1>스프링 부트로 시작하는 웹 서비스</h1>
+    <form th:action="@{/account/login}" method="POST">
+        <div class="row">
+            <div class="col-md-6">
+                <input class="form-control" id="username" name="username" placeholder="Username" type="text">
+                <label for="username">Username</label>
+                <input class="form-control" id="floatingPassword" name="password" placeholder="Password" type="password">
+                <label for="floatingPassword">Password</label>
+                <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+                <a th:href="@{/logout}" class="btn btn-info active" role="button">Logout</a>
+                {{/userName}}
+                {{^userName}}
+                <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
+                <a href="/oauth2/authorization/naver" class="btn btn-success active" role="button">Naver Login</a>
+                {{/userName}}
+            </div>
+        </div>
+    </form>
+    <a href="/joinForm">sign Up</a>
+</body>
+<footer th:replace="~{/fragments/footer.html :: fragment-footer}"></footer>
+</html>
