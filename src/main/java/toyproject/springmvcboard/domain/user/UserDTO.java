@@ -4,18 +4,16 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 
 @Getter
-@Setter
 @NoArgsConstructor
 public class UserDTO {
     private long id;
     @NotNull
-    private String name;
+    private String username;
     @NotNull
     private String email;
     private String password;
@@ -30,9 +28,9 @@ public class UserDTO {
     private String providerId;
 
     @Builder
-    UserDTO(String name, String email, String password, int enabled, String role,
+    UserDTO(String username, String email, String password, int enabled, String role,
             String provider, String providerId, Timestamp createDate) {
-        this.name = name;
+        this.username = username;
         this.email = email;
         this.password = password;
         this.enabled = enabled;

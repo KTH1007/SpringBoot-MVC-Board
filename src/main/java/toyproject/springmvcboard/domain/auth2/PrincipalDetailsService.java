@@ -12,17 +12,23 @@ import toyproject.springmvcboard.domain.user.UserRepository;
 @Slf4j
 public class PrincipalDetailsService implements UserDetailsService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public PrincipalDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     // username을 받아서 UserDetails를 반환하는 메서드
     //함수 종료시 @AuthenticationPrincipal 어노테이션이 생성
     @Override
-    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        User user = userRepository.findByName(name);
-        log.info("username: " + name);
-        if (user != null) {
-            return new PrincipalDetail(user); //User 타입을 인자로 하는 생성자
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        //loadUserByUsername의 매개변수 username은 signup 페이지 input의 name 속성에 설정한 이름과 동일해야함
+//        User userEntity = userRepository.findByUsername(username);
+        User userEntity = userRepository.findByEmail(email);
+        log.debug("username = {}", email);
+        if (userEntity != null) {
+            return new PrincipalDetails(userEntity);
         }
-        return null;
+        throw new UsernameNotFoundException("User not found with username: " + email);
     }
 }

@@ -44,11 +44,11 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         String role = "RULE_USER";
         Timestamp createDate = new Timestamp(System.currentTimeMillis());
 
-        User userEntity = userRepository.findByName(username);
+        User userEntity = userRepository.findByUsername(username);
 
         if (userEntity == null) {
             userEntity = User.builder()
-                    .name(username)
+                    .username(username)
                     .password(password)
                     .email(email)
                     .role(role)
@@ -60,6 +60,6 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
             userRepository.save(userEntity);
         }
 
-        return new PrincipalDetail(userEntity, oAuth2User.getAttributes());
+        return new PrincipalDetails(userEntity, oAuth2User.getAttributes());
     }
 }

@@ -1,20 +1,19 @@
 package toyproject.springmvcboard.domain.user;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
-public class userService {
+@Slf4j
+public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    public userService(UserRepository userRepository, UserMapper userMapper) {
+
+    public UserService(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
     }
 
-    public void save(UserDTO userDTO) {
-        User user = userMapper.UserDTOToUser(userDTO);
-        userRepository.save(user);
-    }
 }

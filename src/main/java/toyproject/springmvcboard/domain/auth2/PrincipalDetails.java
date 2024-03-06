@@ -2,6 +2,7 @@ package toyproject.springmvcboard.domain.auth2;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import toyproject.springmvcboard.domain.user.User;
@@ -11,23 +12,22 @@ import java.util.Collection;
 import java.util.Map;
 
 @Data
-public class PrincipalDetail implements UserDetails, OAuth2User {
+public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private User user;
     private Map<String, Object> attributes;
 
 
     //일반 로그인
-    public PrincipalDetail(User user) {
+    public PrincipalDetails(User user) {
         this.user = user;
     }
 
     //OAuth 로그인
-    public PrincipalDetail(User user, Map<String, Object> attributes) {
+    public PrincipalDetails(User user, Map<String, Object> attributes) {
         this.user = user;
         this.attributes = attributes;
     }
-
 
     //OAuth2User의 메서드
     @Override
@@ -35,16 +35,12 @@ public class PrincipalDetail implements UserDetails, OAuth2User {
         return attributes;
     }
 
-    @Override
-    public String getName() {
-        return user.getName();
-    }
 
     // 해당 User의 권한을 리턴
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collect = new ArrayList<>();
-        collect.add((GrantedAuthority) () -> user.getRole());
+        collect.add(new SimpleGrantedAuthority(user.getRole()));
         return collect;
     }
 
@@ -56,7 +52,7 @@ public class PrincipalDetail implements UserDetails, OAuth2User {
 
     @Override
     public String getUsername() {
-        return user.getName();
+        return user.getUsername();
     }
 
     // 계정 만료 여부 반환
@@ -80,8 +76,11 @@ public class PrincipalDetail implements UserDetails, OAuth2User {
     // 계정 사용 가능 여부 반환
     @Override
     public boolean isEnabled() {
-        return user.getEnabled() == 1;
+        return true;
     }
 
-
+    @Override
+    public String getName() {
+        return null;
+    }
 }

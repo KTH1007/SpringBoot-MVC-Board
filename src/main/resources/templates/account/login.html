@@ -1,28 +1,78 @@
 <!DOCTYPE html>
 <html data-bs-theme="auto" lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{/fragments/header.html :: fragment-header(로그인)}">
-    <meta charset="UTF-8">
+<head>
+    <div th:insert="~{/fragments/header.html :: fragment-temp(로그인)}"></div>
+    <style>
+        .hr-sect {
+            display: flex;
+            flex-basis: 100%;
+            align-items: center;
+            color: rgba(0, 0, 0, 0.35);
+            font-size: 20px;
+            margin: 8px 0px;
+        }
+        .hr-sect::before,
+        .hr-sect::after {
+            content: "";
+            flex-grow: 1;
+            background: rgba(0, 0, 0, 0.35);
+            height: 1px;
+            font-size: 0px;
+            line-height: 0px;
+            margin: 0px 16px;
+        }
+    </style>
+    <!--다크 모드 설정 이미지-->
+    <svg th:replace="~{/fragments/darkmode.html :: fragment-image}"></svg>
+
+    <!--다크 모드 버튼-->
+    <div th:replace="~{/fragments/darkmode.html :: fragment-button}"></div>
 </head>
-<body class="d-flex flex-column min-vh-100">
-    <h1>스프링 부트로 시작하는 웹 서비스</h1>
-    <form th:action="@{/account/login}" method="POST">
-        <div class="row">
-            <div class="col-md-6">
-                <input class="form-control" id="username" name="username" placeholder="Username" type="text">
-                <label for="username">Username</label>
-                <input class="form-control" id="floatingPassword" name="password" placeholder="Password" type="password">
-                <label for="floatingPassword">Password</label>
-                <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-                <a th:href="@{/logout}" class="btn btn-info active" role="button">Logout</a>
-                {{/userName}}
-                {{^userName}}
-                <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
-                <a href="/oauth2/authorization/naver" class="btn btn-success active" role="button">Naver Login</a>
-                {{/userName}}
+<body>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h1 class="card-title text-center mb-4 font-weight-bold" style="font-weight: bold">Login</h1>
+                    <p class="text-muted text-center">
+                        Enter your email below to login to your account
+                    </p>
+                    <form th:action="@{/account/login}" method="post" class="mt-4">
+                        <!-- Email input -->
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" id="username" name="username" placeholder="m@example.com" required>
+                            <label for="username">Email</label>
+                        </div>
+                        <!-- Password input -->
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                            <label for="password">Password</label>
+                        </div>
+                        <div th:if="error">
+                            <p id="valid" style="color: red; font-size:12px;"><a th:text="${exception}"></a></p>
+                        </div>
+                        <!-- Submit button -->
+                        <button type="submit" class="btn btn-primary btn-lg w-100">Login</button>
+                        <div class="hr-sect">or</div>
+                        <div class="form-group d-flex justify-content-center">
+                            <a th:href="@{/oauth2/authorization/google}" class="btn btn-libtn-lg mt-3">
+                                <img class="bi me-2" width="35" height="35" src="/images/web_light_rd_na@2x.png" alt="Google Logo">
+                            </a>
+                            <a th:href="@{/oauth2/authorization/naver}" class="btn btn-libtn-lg mt-3">
+                                <img class="bi me-2" width="35" height="35" src="/images/btnG_아이콘원형.png" alt="Naver Logo">
+                            </a>
+                        </div>
+                        <div style="float: right">
+                        <p style="color: gray">Don't have an account?</p>
+                        <a th:href="@{/account/signin}" style="float: right">Sign up here</a>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </form>
-    <a href="/joinForm">sign Up</a>
+    </div>
+</div>
+<footer th:insert="~{/fragments/footer.html :: fragment-footer}"></footer>
 </body>
-<footer th:replace="~{/fragments/footer.html :: fragment-footer}"></footer>
 </html>

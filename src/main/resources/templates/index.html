@@ -1,6 +1,8 @@
 <!doctype html>
 <html data-bs-theme="auto" lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{/fragments/header.html :: fragment-header(게시판)}"></head>
+<head>
+    <div th:insert="~{/fragments/header.html :: fragment-temp(게시판)}"></div>
+</head>
 <body>
 
 <!--다크 모드 설정 이미지-->
