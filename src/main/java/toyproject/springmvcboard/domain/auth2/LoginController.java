@@ -1,6 +1,8 @@
 package toyproject.springmvcboard.domain.auth2;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -15,6 +17,7 @@ import toyproject.springmvcboard.domain.user.UserRepository;
 import toyproject.springmvcboard.domain.user.UserService;
 
 import java.sql.Timestamp;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/account")
@@ -40,35 +43,58 @@ public class LoginController {
         return "/account/login";
     }
 
+    @GetMapping("/signup")
+    public String singup(){
+        return "/account/signup";
+    }
+
     @PostMapping("/signup")
-    public String processSignup(@RequestParam String username, @RequestParam String email,
+    public String processSignup(@RequestParam String name, @RequestParam String username,
                                 @RequestParam String password, @RequestParam String confirmPassword,
                                 RedirectAttributes redirectAttributes) {
 
-        if (!password.equals(confirmPassword)) {
-            redirectAttributes.addFlashAttribute("signupError", "Password and Confirm Password do not match");
-            log.debug("not match = {}", password);
-            return "redirect:/account/signup?show=signup";
+
+        try {// 비밀번호 형식 검증
+            String passwordPattern = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,16}";
+            if (!password.matches(passwordPattern)) {
+                redirectAttributes.addFlashAttribute("signupError", "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.");
+                log.error("password error = {}", password);
+                return "redirect:/account/signup";
+            }
+
+            if (!password.equals(confirmPassword)) {
+                redirectAttributes.addFlashAttribute("signupError", "Password and Confirm Password do not match");
+                log.error("not match = {}", password);
+                return "redirect:/account/signup";
+            }
+
+            // 비밀번호 암호화
+            String encodedPassword = passwordEncoder.encode(password);
+
+            // 현재 시간 정보
+            Timestamp registrationTime = new Timestamp(System.currentTimeMillis());
+
+            User user = User.builder()
+                    .username(name)
+                    .email(username)
+                    .password(encodedPassword)
+                    .enabled(1)
+                    .role("ROLE_USER")
+                    .provider("custom")
+                    .providerId("custom")
+                    .createDate(registrationTime)
+                    .build();
+            // 사용자 정보 저장
+            userRepository.save(user);
+        } catch (ConstraintViolationException e) {
+            Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
+            for (ConstraintViolation<?> violation : violations) {
+                String message = violation.getMessage();
+                redirectAttributes.addFlashAttribute("signupError", message);
+            }
+            return "redirect:/account/signup";
         }
-        // 비밀번호 암호화
-        String encodedPassword = passwordEncoder.encode(password);
-
-        // 현재 시간 정보
-        Timestamp registrationTime = new Timestamp(System.currentTimeMillis());
-
-        User user = User.builder()
-                .username(username)
-                .email(email)
-                .password(encodedPassword)
-                .enabled(1)
-                .role("ROLE_USER")
-                .provider("custom")
-                .providerId("custom")
-                .createDate(registrationTime)
-                .build();
-        // 사용자 정보 저장
-        userRepository.save(user);
         log.debug("signup = {}", username);
-        return "redirect:/account/signin?show=signin"; // 회원가입 후 로그인 페이지로 리다이렉션
+        return "/account/login";
     }
 }

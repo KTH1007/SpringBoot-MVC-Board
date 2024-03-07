@@ -34,11 +34,16 @@
         <div class="col-md-6">
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <h1 class="card-title text-center mb-4 font-weight-bold" style="font-weight: bold">Login</h1>
+                    <h1 class="card-title text-center mb-4 font-weight-bold" style="font-weight: bold">Signup</h1>
                     <p class="text-muted text-center">
-                        Enter your email below to login to your account
+                        Enter your information to create an account
                     </p>
-                    <form th:action="@{/account/login}" method="post" class="mt-4">
+                    <form th:action="@{/account/signup}" method="post" class="mt-4">
+                        <!-- name input -->
+                        <div class="form-floating mb-3">
+                            <input type="name" class="form-control" id="name" name="name" placeholder="m@example.com" required>
+                            <label for="name">Name</label>
+                        </div>
                         <!-- Email input -->
                         <div class="form-floating mb-3">
                             <input type="email" class="form-control" id="username" name="username" placeholder="m@example.com" required>
@@ -49,11 +54,16 @@
                             <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
                             <label for="password">Password</label>
                         </div>
-                        <div th:if="error">
-                            <p id="valid" style="color: red; font-size:12px;"><a th:text="${exception}"></a></p>
+                        <!-- Password Confirmation input -->
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+                            <label for="confirmPassword">Confirm Password</label>
+                        </div>
+                        <div th:if="${signupError}">
+                            <p style="color: red; font-size:12px;" th:text="${signupError}"></p>
                         </div>
                         <!-- Submit button -->
-                        <button type="submit" class="btn btn-primary btn-lg w-100">Login</button>
+                        <button type="submit" class="btn btn-primary btn-lg w-100">Signup</button>
                         <div class="hr-sect">or</div>
                         <div class="form-group d-flex justify-content-center">
                             <a th:href="@{/oauth2/authorization/google}" class="btn btn-libtn-lg mt-3">
@@ -64,8 +74,7 @@
                             </a>
                         </div>
                         <div style="float: right">
-                        <p style="color: gray">Don't have an account?</p>
-                        <a th:href="@{/account/signup}" style="float: right">Sign up here</a>
+                            <a th:href="@{/account/login}" style="float: right">Login here</a>
                         </div>
                     </form>
                 </div>
